@@ -63,6 +63,39 @@ class ItemRepository extends BaseRepository {
 
     /**
      *
+     * @param {ItemEntity} item
+     */
+    remove(item) {
+        let persistence = this.getPersistence;
+
+        for (let i = 0, len = persistence.length; i < len; ++i) {
+            if (item.key === persistence[i].key) {
+                persistence.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    /**
+     *
+     * @param item
+     * @returns {ItemEntity}
+     */
+    update(item) {
+        const persistence = this.getPersistence;
+        for (let i = 0, len = persistence.length; i < len; ++i) {
+            if (item.key === persistence[i].key) {
+                const _item = Object.assign({}, item);
+                persistence[i] = _item;
+                return _item;
+            }
+        }
+
+        throw new Error('Item wasn\'t found.');
+    }
+
+    /**
+     *
      * @param item ItemEntity
      * @param currentTime
      * @returns {ItemEntity|EmptyEntity}
