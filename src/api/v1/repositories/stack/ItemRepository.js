@@ -4,32 +4,32 @@ const Persistence = require('../../persistance/stack/Persistence');
 const BaseRepository = require('../BaseRepository');
 
 class ItemRepository extends BaseRepository {
-    constructor() {
-        super({validationSchema: () => ItemValidationSchema, persistence: () => Persistence})
-    }
+  constructor() {
+    super({ validationSchema: () => ItemValidationSchema, persistence: () => Persistence });
+  }
 
-    /**
+  /**
      *
      * @param item
-     * @returns {boolean}
+     * @returns {ItemEntity}
      */
-    persist(item) {
-        if (item instanceof ItemEntity) {
-            item = Object.assign({}, item);
-            this.getPersistence.push(item);
-            return item;
-        }
-        throw new Error('Item isn\'t ItemEntity.');
+  persist(item) {
+    if (item instanceof ItemEntity) {
+      const newItem = Object.assign({}, item);
+      this.getPersistence.push(newItem);
+      return newItem;
     }
+    throw new Error('Item isn\'t ItemEntity.');
+  }
 
-    /**
+  /**
      * remove last element from stack
      *
      * @returns ItemEntity | null
      */
-    takeOutLastItem() {
-        return this.getPersistence.pop()
-    }
+  takeOutLastItem() {
+    return this.getPersistence.pop();
+  }
 }
 
 module.exports = ItemRepository;
