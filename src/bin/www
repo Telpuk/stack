@@ -3,7 +3,8 @@
 /**
  * Module dependencies.
  */
-
+require('custom-env').env('develop');
+const {APP_PORT} = process.env;
 const app = require('../app');
 const debug = require('debug')('myapp:server');
 const http = require('http');
@@ -11,7 +12,7 @@ const http = require('http');
 /**
  * Get port from environment and store in Express.
  */
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(APP_PORT || '3000');
 app.set('port', port);
 
 /**

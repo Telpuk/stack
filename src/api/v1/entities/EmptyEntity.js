@@ -1,3 +1,6 @@
+/**
+ * entity for an empty answer
+ */
 class EmptyEntity {
 
 }

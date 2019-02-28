@@ -6,6 +6,7 @@ const EmptyEntity = require('../../entities/EmptyEntity');
 const Persistence = require('../../persistance/ttl-stack/Persistence');
 
 class ItemRepository extends BaseRepository {
+
     constructor() {
         super({validationSchema: () => ItemValidationSchema, persistence: () => Persistence})
     }
@@ -23,7 +24,7 @@ class ItemRepository extends BaseRepository {
             }
             if (old instanceof EmptyEntity) {
                 item = Object.assign({}, item);
-                this.getPersistence().push(item);
+                this.getPersistence.push(item);
             } else {
                 item = this.update(item);
             }
@@ -39,9 +40,19 @@ class ItemRepository extends BaseRepository {
      * @returns {ItemEntity|EmptyEntity}
      */
     findByKey(key) {
-        return this.findOne({condition: "key", value: key});
+        const item = this.getPersistence.find((item) => {
+            return item.key === key;
+        });
+
+        return item || (new EmptyEntity());
     }
 
+    /**
+     *
+     * @param item
+     * @param currentTime
+     * @returns {ItemEntity|EmptyEntity}
+     */
     findItemConsiderTTl({item, currentTime}) {
         if (item.ttl) {
             return this.considerTTl({item: item, currentTime})

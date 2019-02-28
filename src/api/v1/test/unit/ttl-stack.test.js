@@ -1,6 +1,6 @@
-const ItemRepository = require('../repositories/ttl-stack/ItemRepository');
-const ItemEntity = require('../entities/ttl-stack/ItemEntity');
-const EmptyEntity = require('../entities/EmptyEntity');
+const ItemRepository = require('../../repositories/ttl-stack/ItemRepository');
+const ItemEntity = require('../../entities/ttl-stack/ItemEntity');
+const EmptyEntity = require('../../entities/EmptyEntity');
 
 test('Validate error message', () => {
     const itemEntity = new ItemEntity({keu: ""});

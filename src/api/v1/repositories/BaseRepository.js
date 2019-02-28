@@ -2,9 +2,30 @@ const Joi = require('joi');
 const EmptyEntity = require('../entities/EmptyEntity');
 
 class BaseRepository {
+    /**
+     *
+     * @returns {Function}
+     */
+    get getValidationSchema() {
+        return this._getValidationSchema;
+    }
+
+    /**
+     *
+     * @returns {Array}
+     */
+    get getPersistence() {
+        return this._getPersistence();
+    }
+
+    /**
+     *
+     * @param {Function} validationSchema
+     * @param {Function} persistence
+     */
     constructor({validationSchema, persistence}) {
-        this.getValidationSchema = validationSchema;
-        this.getPersistence = persistence;
+        this._getValidationSchema = validationSchema;
+        this._getPersistence = persistence;
     }
 
     /**
@@ -13,7 +34,7 @@ class BaseRepository {
      * @returns {*}
      */
     validate(item) {
-        return Joi.validate(item, this.getValidationSchema());
+        return Joi.validate(item, this._getValidationSchema());
     }
 
     /**
@@ -21,7 +42,7 @@ class BaseRepository {
      * @returns {Array}
      */
     findAll() {
-        return this.getPersistence().slice();
+        return this._getPersistence().slice();
     }
 
     /**
@@ -29,7 +50,7 @@ class BaseRepository {
      * @param item ItemEntity
      */
     remove(item) {
-        let persistence = this.getPersistence();
+        let persistence = this._getPersistence();
 
         for (let i = 0, len = persistence.length; i < len; ++i) {
             if (item.key === persistence[i].key) {
@@ -45,7 +66,7 @@ class BaseRepository {
      * @returns {any}
      */
     update(item) {
-        const persistence = this.getPersistence();
+        const persistence = this._getPersistence();
         for (let i = 0, len = persistence.length; i < len; ++i) {
             if (item.key === persistence[i].key) {
                 const _item = Object.assign({}, item);
@@ -55,20 +76,6 @@ class BaseRepository {
         }
 
         throw new Error('Item wasn\'t found.');
-    }
-
-    /**
-     *
-     * @param condition
-     * @param value
-     * @returns {ItemEntity | EmptyEntity}
-     */
-    findOne({condition, value}) {
-        const item = this.getPersistence().find((item) => {
-            return item[condition] === value;
-        });
-
-        return item || (new EmptyEntity());
     }
 }
 

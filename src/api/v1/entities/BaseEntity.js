@@ -1,8 +1,27 @@
 const uuidv1 = require('uuid/v1');
 
 class BaseEntity {
+    /**
+     *
+     * @returns {string}
+     */
+    get id() {
+        return this._id;
+    }
+
+    /**
+     *
+     * @param {string} value
+     */
+    set id(value) {
+        this._id = value;
+    }
+
+    /**
+     * @constructor
+     */
     constructor() {
-        this.id = uuidv1();
+        this._id = uuidv1();
     }
 }
 

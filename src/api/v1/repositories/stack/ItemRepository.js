@@ -16,7 +16,7 @@ class ItemRepository extends BaseRepository {
     persist(item) {
         if (item instanceof ItemEntity) {
             item = Object.assign({}, item);
-            this.getPersistence().push(item);
+            this.getPersistence.push(item);
             return item;
         }
         throw new Error('Item isn\'t ItemEntity.');
@@ -28,7 +28,7 @@ class ItemRepository extends BaseRepository {
      * @returns ItemEntity | null
      */
     takeOutLastItem() {
-        return this.getPersistence().pop()
+        return this.getPersistence.pop()
     }
 }
 

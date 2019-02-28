@@ -1,5 +1,5 @@
-const ItemRepository = require('../repositories/stack/ItemRepository');
-const ItemEntity = require('../entities/stack/ItemEntity');
+const ItemRepository = require('../../repositories/stack/ItemRepository');
+const ItemEntity = require('../../entities/stack/ItemEntity');
 
 test('Validate error message', () => {
     const itemEntity = new ItemEntity({tex: ""});

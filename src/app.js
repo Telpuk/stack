@@ -1,3 +1,5 @@
+const {CURRENT_API_VERSION,API_DOC_URL} = process.env;
+
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -5,25 +7,27 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const app = express();
-
+//swagger
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger/swagger.yaml');
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(API_DOC_URL, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-//declaration
-const CURRENT_API_VERSION = 'v1';
 const APIs_URL = `/api/${CURRENT_API_VERSION}`;
 const APIs_PATH_ROUTERS = `.${APIs_URL}/routers`;
 
+app.enable('strict routing');
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
-app.enable('strict routing');
 
+/**
+ * auto-including app's routers
+ * patterns api/v/routers
+ */
 fs.readdirSync(APIs_PATH_ROUTERS).forEach(file => {
     app.use(`${APIs_URL}/${path.basename(file, '.js')}`, require(`${APIs_PATH_ROUTERS}/${file}`));
 });

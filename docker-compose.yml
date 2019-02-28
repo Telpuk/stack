@@ -2,21 +2,23 @@ version: "3.7"
 
 services:
 
-  #### nodejs-server ##############################################
+  #### server ##############################################
   nodejs-server:
     build:
       context: ./docker
       dockerfile: nodejs.docker
     command: npm start
     ports:
-      - 3000:3000
+      - ${APP_PORT}:${APP_PORT}
+    environment:
+      - APP_PORT=${APP_PORT}
+      - API_DOC_URL=${API_DOC_URL}
+      - CURRENT_API_VERSION=${CURRENT_API_VERSION}
     volumes:
       - ./src:/app
-    depends_on:
-      - npm
 
-  #### npm ##############################################
-  npm:
+  #### package-manager ##############################################
+  package-manager:
     build:
       context: ./docker
       dockerfile: nodejs.docker
