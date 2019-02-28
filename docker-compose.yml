@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+
+  #### nodejs-server ##############################################
+  nodejs-server:
+    build:
+      context: ./docker
+      dockerfile: nodejs.docker
+    command: npm start
+    ports:
+      - 3000:3000
+    volumes:
+      - ./src:/app
+    depends_on:
+      - npm
+
+  #### npm ##############################################
+  npm:
+    build:
+      context: ./docker
+      dockerfile: nodejs.docker
+    command: npm
+    volumes:
+      - ./src:/app
+

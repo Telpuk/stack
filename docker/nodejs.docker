@@ -1,0 +1,11 @@
+FROM node:latest
+
+# Create app directory
+RUN mkdir -p /app
+
+VOLUME ["/app"]
+
+WORKDIR /app
+
+# Set up the command arguments
+CMD npm -v

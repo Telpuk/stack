@@ -1,0 +1,145 @@
+openapi: 3.0.0
+info:
+  title: Sample API
+  description: ''
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api/v1
+    description: ''
+paths:
+  /stack/item:
+    post:
+      summary: Add a new item.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StackItem'
+      responses:
+        '200':    # status code
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StackItem'
+
+  /stack/item/take/last:
+    get:
+      summary: Take out a item from stack.
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StackItem'
+
+  /stack/items:
+    get:
+      summary: Get all items.
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              type: array
+              schema:
+                $ref: '#/components/schemas/ArrayOfStackItems'
+
+  /ttl-stack/item:
+    post:
+      summary: Add a new item.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TTlItem'
+      responses:
+        '200':    # status code
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TTlItem'
+
+  /ttl-stack/items:
+    get:
+      summary: Get all items.
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              type: array
+              schema:
+                $ref: '#/components/schemas/ArrayOfTTlItems'
+
+  /ttl-stack/item/{key}:
+    get:
+      parameters:
+        - in: path
+          name: key   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            description: The key
+      summary: Get item.
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TTlItem'
+    delete:
+      parameters:
+        - in: path
+          name: key   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            description: The key
+      summary: Delete item.
+      responses:
+        '200':    # status code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TTlItem'
+components:
+  schemas:
+    StackItem:
+      title: StackItem
+      type: object
+      properties:
+        text:
+          type: string
+          description: Message text
+      required:
+        - text
+
+    TTlItem:
+      title: TTlItem
+      type: object
+      properties:
+        key:
+          type: string
+          description: text
+        value:
+          type: string
+          description: text
+        ttl:
+          type: integer
+          description: Message text
+      required:
+        - text
+
+    ArrayOfStackItems:
+      title: Array Of Items
+      type: array
+      items:
+        $ref: '#/components/schemas/StackItem'
+
+    ArrayOfTTlItems:
+      title: Array Of TTlItems
+      type: array
+      items:
+        $ref: '#/components/schemas/TTlItem'
